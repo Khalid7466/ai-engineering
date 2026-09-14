@@ -1,21 +1,13 @@
-# AI Engineering Learning Journey
 # AI Engineering Knowledge Base
 
-Welcome to the AI Engineering Learning Journey documentation. This repository contains a comprehensive collection of educational resources, practical implementations, and project-based learning that adhere to best practices in AI.
 > A production-first reference on building, deploying, and operating LLM-based systems.
 > Not a tutorial. Not a glossary. Engineering decisions, tradeoffs, and the reasoning behind them.
 
-## Overview
-- **Educational Markdown Files**: Each markdown file provides detailed explanations and insights into various concepts related to AI engineering.
-- **Practical Implementations**: Implementations are included to reinforce learning and illustrate how these concepts can be applied in real-world scenarios.
-- **Projects Folder**: A dedicated folder for projects that showcases unique applications of the skills and methods learned throughout this journey.
 [![Modules](https://img.shields.io/badge/Modules-7-38bdf8?style=flat-square)](.)
-[![Files](https://img.shields.io/badge/Files-112+-34d399?style=flat-square)](.)
 [![Files](https://img.shields.io/badge/Files-137-34d399?style=flat-square)](.)
 [![License](https://img.shields.io/badge/License-MIT-818cf8?style=flat-square)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-fb7185?style=flat-square)](./CONTRIBUTING.md)
 
-This documentation is meant to guide learners in their exploration and mastery of AI engineering, supporting both theoretical understanding and practical skills development.
 ---
 
 ## ⚠️ Found Something Wrong?
@@ -46,8 +38,7 @@ Engineers who already know how to write code and want to understand:
 graph LR
     A[01\nLLM Fundamentals] --> B[02\nRAG]
     A --> C[03\nAgentic AI]
-    B --> D[04\nFine-Tuning]
-    C --> D
+    A --> D[04\nFine-Tuning]
     B --> E[05\nEvaluation]
     C --> E
     D --> E
@@ -81,7 +72,6 @@ Each module builds on the previous ones. **Module 07 is the capstone** — it on
 Follow the numbered modules in order. Each module has:
 - `README.md` — overview and learning path for the module
 - `use-case.md` — a real-world engineering scenario that frames everything in the module
-- Numbered concept files — go deep on one concept each
 - Numbered concept files — one concept per file, deep and focused
 
 ### As a reference
@@ -89,8 +79,6 @@ Jump directly to what you need. Every file is standalone with cross-references t
 
 ### For interview prep
 - Start with [01-llm-fundamentals/README.md](./01-llm-fundamentals/README.md) for fundamentals
-- Then work through [07-ai-systems-design/05-interview-questions/](./07-ai-systems-design/05-interview-questions/) for system design
-- The `resources/interview-cheat-sheet.md` has a condensed Q&A for last-minute review
 - Work through [07-ai-systems-design/05-interview-questions/](./07-ai-systems-design/05-interview-questions/) for system design
 - Use [resources/interview-cheat-sheet.md](./resources/interview-cheat-sheet.md) for last-minute review
 
@@ -101,16 +89,13 @@ Jump directly to what you need. Every file is standalone with cross-references t
 ```
 Fixed execution path?
 ├── YES → Pipeline or RAG family
-│         ├── No document search needed → Prompt Chaining
-│         ├── One search pass enough → Standard RAG
-│         ├── One search pass enough   → Standard RAG
+│         ├── No document search needed  → Prompt Chaining
+│         ├── One search pass enough     → Standard RAG
 │         └── Multi-source / self-correcting → Agentic RAG
 └── NO  → Agent family
-          ├── One agent sufficient → Autonomous Agent (ReAct)
-          ├── Separable phases → Orchestrator + Workers
-          ├── One agent sufficient     → Autonomous Agent (ReAct)
-          ├── Separable phases         → Orchestrator + Workers
-          └── Truly independent roles → Multi-Agent System
+          ├── One agent sufficient       → Autonomous Agent (ReAct)
+          ├── Separable phases           → Orchestrator + Workers
+          └── Truly independent roles    → Multi-Agent System
 ```
 
 > **Golden Rule:** Start with the simplest architecture that could work. Add complexity only when the simple version demonstrably fails.
@@ -127,15 +112,10 @@ Fixed execution path?
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md). PRs welcome — especially for:
-- Additional case studies
-- New use-case.md files
-- Corrections to technical content
 See [CONTRIBUTING.md](./CONTRIBUTING.md). PRs welcome — especially for corrections to technical content, new use-cases, and updated tooling references.
 
 ---
 
 ## License
 
-MIT — use freely, attribute appreciated.
 MIT — use freely, attribution appreciated.
