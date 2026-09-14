@@ -60,7 +60,7 @@
 - **QKV (Query, Key, Value)**: The three projection vectors derived from input token embeddings that execute attention: Query represents what a token seeks, Key represents what a token contains, and Value represents the retrieved semantic content. Attention weight is computed as $\text{Softmax}(QK^T / \sqrt{d_k})V$.  
   → See [06-self-attention.md](../01-llm-fundamentals/06-self-attention.md)
 
-- **Feed-Forward Network (FFN)**: The multi-layer perceptron following self-attention in each transformer block that processes tokens position-wise and holds the vast majority of static factual parameters. The FFN accounts for approximately two-thirds of total model parameters and floating-point operations in standard dense models.  
+- **Feed-Forward Network (FFN)**: The multi-layer perceptron following self-attention in each transformer block that processes tokens position-wise and holds the vast majority of static factual parameters. The FFN accounts for approximately two-thirds of total model parameters (excluding the embedding layer) and floating-point operations in standard dense models.  
   → See [07-feed-forward-network.md](../01-llm-fundamentals/07-feed-forward-network.md)
 
 - **Mixture of Experts (MoE)**: An architecture replacing dense FFN layers with multiple sparse "expert" sub-networks, routing each token to only top-$k$ experts (e.g., 2 of 8 in Mixtral). MoE dramatically cuts inference FLOPs per token while demanding the full VRAM capacity required to hold all dormant experts in memory.  
@@ -73,7 +73,7 @@
   → See [11-inference-vs-training.md](../01-llm-fundamentals/11-inference-vs-training.md)
 
 - **FlashAttention**: An exact attention algorithm that reorganizes the attention computation into GPU SRAM tiles, minimizing slow HBM (High Bandwidth Memory) read/writes. FlashAttention reduces memory footprint from $O(N^2)$ to $O(N)$ and yields 2–4x speedups without any numerical approximation.  
-  → See [06-production/02-cost-optimization/04-batching-strategies.md](../06-production/02-cost-optimization/04-batching-strategies.md)
+  → See [06-self-attention.md](../01-llm-fundamentals/06-self-attention.md)
 
 ---
 
@@ -132,7 +132,7 @@
 - **Recency Bias**: The model's vulnerability to over-weighting tokens placed at the very end of a prompt context while under-attending to information in the middle. In production pipelines, critical system instructions and formatting constraints should be placed at the system prompt and repeated near the tail of the payload.  
   → See [08-context-window.md](../01-llm-fundamentals/08-context-window.md)
 
-- **Lost-in-the-Middle**: The empirical degradation in LLM retrieval performance where facts situated in the middle 60% of long prompt contexts are retrieved with significantly lower accuracy than facts at the immediate beginning or end. Mitigated by context compression, reranking top chunks to prompt boundaries, or prompt structuring.  
+- **Lost-in-the-Middle**: The empirical degradation in LLM retrieval performance where facts situated in the middle of long prompt contexts are retrieved with significantly lower accuracy than facts at the immediate beginning or end. Mitigated by context compression, reranking top chunks to prompt boundaries, or prompt structuring.  
   → See [08-context-window.md](../01-llm-fundamentals/08-context-window.md)
 
 ---
@@ -149,10 +149,10 @@
   → See [02-rag/README.md](../02-rag/README.md)
 
 - **Chunking**: The process of breaking large text corpora into discrete segment lengths suitable for embedding models and context injection. Chunks that are too small lose narrative context; chunks that are too large dilute embedding vector sharpness and pollute LLM prompts with irrelevant text.  
-  → See [02-rag/02-data-ingestion/01-document-loaders.md](../02-rag/02-data-ingestion/01-document-loaders.md)
+  → See [03-chunking-strategies.md](../02-rag/02-data-ingestion/03-chunking-strategies.md)
 
 - **Semantic Chunking**: An adaptive chunking technique that computes similarity scores between consecutive sentences and places chunk boundaries only where semantic distance crosses an empirical threshold. Semantic chunking prevents arbitrary midpoint sentence splits at the cost of running embedding inference across every raw sentence during data ingestion.  
-  → See [02-rag/02-data-ingestion/01-document-loaders.md](../02-rag/02-data-ingestion/01-document-loaders.md)
+  → See [03-chunking-strategies.md](../02-rag/02-data-ingestion/03-chunking-strategies.md)
 
 - **Parent-Child Chunking**: A retrieval strategy that splits documents into small child chunks (e.g., 128 tokens) for fine-grained vector similarity search, but retrieves and passes their surrounding parent chunks (e.g., 1024 tokens) to the LLM. This decouples retrieval precision from synthesis context richness.  
   → See [02-rag/README.md](../02-rag/README.md)
@@ -182,11 +182,11 @@
 - **Vector Database**: A specialized database optimized for storing, indexing, and executing low-latency nearest-neighbor searches over multi-dimensional embedding vectors alongside metadata filters. Unlike relational databases, vector DB queries return approximate similarity matches rather than exact deterministic records.  
   → See [02-rag/README.md](../02-rag/README.md)
 
-- **ANN (Approximate Nearest Neighbors)**: A class of search algorithms that sacrifices 1–2% recall accuracy to find nearest vector neighbors orders of magnitude faster than brute-force $O(N)$ exhaustive scans. ANN indexes are required to achieve sub-50ms retrieval latencies across corpora with millions of vectors.  
-  → See [02-rag/README.md](../02-rag/README.md)
+- **ANN (Approximate Nearest Neighbors)**: A class of search algorithms that sacrifices a small amount of recall accuracy (tunable via index parameters) to find nearest vector neighbors orders of magnitude faster than brute-force $O(N)$ exhaustive scans. ANN indexes are required to achieve sub-50ms retrieval latencies across corpora with millions of vectors.  
+  → See [02-semantic-search.md](../02-rag/05-retrieval/02-semantic-search.md)
 
 - **HNSW (Hierarchical Navigable Small World)**: A graph-based ANN index algorithm that structures vectors into multi-layer geometric graphs, executing fast logarithmic searches from sparse top layers down to dense bottom layers. HNSW delivers the highest query throughput and recall in production, but requires significant RAM to store graph edge pointers.  
-  → See [02-rag/README.md](../02-rag/README.md)
+  → See [02-semantic-search.md](../02-rag/05-retrieval/02-semantic-search.md)
 
 - **IVF (Inverted File Index)**: A cluster-based ANN index that partitions vector space into Voronoi cells using k-means, querying only the centroids nearest the search vector. IVF has a substantially smaller memory footprint than HNSW, but exhibits lower recall and requires periodic re-clustering as new data arrives.  
   → See [02-rag/README.md](../02-rag/README.md)
@@ -220,37 +220,37 @@
   → See [02-react-pattern.md](../03-agentic-ai/02-react-pattern.md)
 
 - **Tool Calling (Function Calling)**: The structured mechanism by which an LLM detects when an external operation is required, generates a valid JSON payload matching a declared schema, and pauses generation until the runtime executes the function and injects the output. Production tool calls require schema validation (e.g., Pydantic) and strict timeout guards to prevent application crashes.  
-  → See [03-agentic-ai/README.md](../03-agentic-ai/README.md)
+  → See [04-multi-agent-frameworks.md](../03-agentic-ai/06-multi-agent-systems/04-multi-agent-frameworks.md)
 
 - **MCP (Model Context Protocol)**: An open standardized protocol created by Anthropic that decouples LLM applications from data sources and tools via client-server architecture. MCP eliminates custom tool integration boilerplate by allowing models to securely discover and invoke tools across standardized local or remote servers.  
-  → See [03-agentic-ai/README.md](../03-agentic-ai/README.md)
+  → See [04-multi-agent-frameworks.md](../03-agentic-ai/06-multi-agent-systems/04-multi-agent-frameworks.md)
 
 - **Working Memory**: The short-term, in-context state maintained during an active agent session, consisting of the scratchpad, current tool outputs, and execution graph variables. Working memory is bounded by the context window and must be actively pruned or summarized to prevent context overflow.  
-  → See [03-agentic-ai/README.md](../03-agentic-ai/README.md)
+  → See [04-multi-agent-frameworks.md](../03-agentic-ai/06-multi-agent-systems/04-multi-agent-frameworks.md)
 
 - **Episodic Memory**: The persistent historical record of an agent's past user interactions, successful trajectories, and past failures across previous sessions. Stored in vector indices or document stores, episodic memory allows agents to adapt to recurring user patterns and avoid repeating historical mistakes.  
-  → See [03-agentic-ai/README.md](../03-agentic-ai/README.md)
+  → See [04-multi-agent-frameworks.md](../03-agentic-ai/06-multi-agent-systems/04-multi-agent-frameworks.md)
 
 - **Semantic Memory**: The persistent, structured knowledge base of factual concepts, domain rules, and world models available to an agent. Implemented via vector databases or relational knowledge graphs, semantic memory gives the agent access to facts beyond its parametric weights.  
-  → See [03-agentic-ai/README.md](../03-agentic-ai/README.md)
+  → See [04-multi-agent-frameworks.md](../03-agentic-ai/06-multi-agent-systems/04-multi-agent-frameworks.md)
 
 - **Procedural Memory**: The persistent repository of operational execution guidelines, standard workflows, and specialized tool-calling playbooks that dictate how an agent executes tasks. In modern systems, procedural memory is embedded in system prompt templates, few-shot demonstration catalogs, and fine-tuned policy weights.  
-  → See [03-agentic-ai/README.md](../03-agentic-ai/README.md)
+  → See [04-multi-agent-frameworks.md](../03-agentic-ai/06-multi-agent-systems/04-multi-agent-frameworks.md)
 
 - **Orchestrator**: The central supervisor agent or state machine responsible for breaking a high-level goal into discrete tasks, delegating them to worker agents, and aggregating the final output. In production systems, orchestrator logic should be heavily constrained using deterministic state machines rather than open-ended autonomous agents.  
-  → See [07-ai-systems-design/02-architectural-patterns/04-autonomous-agent.md](../07-ai-systems-design/02-architectural-patterns/04-autonomous-agent.md)
+  → See [02-orchestrator-worker.md](../03-agentic-ai/06-multi-agent-systems/02-orchestrator-worker.md)
 
 - **Worker Agent**: A specialized, narrow-scope agent configured with a small set of domain tools (e.g., SQL queries, document extraction) that executes specific sub-tasks delegated by the orchestrator. Isolating tools into discrete workers avoids tool-selection confusion and prompt bloat.  
   → See [07-ai-systems-design/README.md](../07-ai-systems-design/README.md)
 
 - **LangGraph**: A cyclic orchestration framework from LangChain that models agent workflows as stateful computational graphs containing nodes, conditional edges, and explicit checkpoints. LangGraph enables production-grade human-in-the-loop interventions, time-travel debugging, and multi-agent fault recovery.  
-  → See [03-agentic-ai/README.md](../03-agentic-ai/README.md)
+  → See [04-multi-agent-frameworks.md](../03-agentic-ai/06-multi-agent-systems/04-multi-agent-frameworks.md)
 
 - **CrewAI**: A role-based multi-agent orchestration framework designed around autonomous collaborative "crews" with defined personas, goals, and inter-agent delegation patterns. CrewAI speeds prototyping for collaborative problem-solving, but can be prone to runaway costs if inter-agent loops are unconstrained.  
-  → See [03-agentic-ai/README.md](../03-agentic-ai/README.md)
+  → See [04-multi-agent-frameworks.md](../03-agentic-ai/06-multi-agent-systems/04-multi-agent-frameworks.md)
 
 - **AutoGen**: Microsoft's multi-agent conversational framework enabling complex workflows via multi-turn conversations between customizable, tool-enabled agents and human participants. AutoGen provides flexible group-chat management, but requires strict termination conditions to avoid infinite circular debate loops.  
-  → See [03-agentic-ai/README.md](../03-agentic-ai/README.md)
+  → See [04-multi-agent-frameworks.md](../03-agentic-ai/06-multi-agent-systems/04-multi-agent-frameworks.md)
 
 - **Prompt Chaining**: A deterministic architectural pattern that decomposes a complex task into a sequential series of explicit LLM calls, where each step's output is validated before feeding into the next prompt. Prompt chaining provides high reliability and debuggability without the latency and unpredictability of autonomous agents.  
   → See [07-ai-systems-design/02-architectural-patterns/01-prompt-chaining.md](../07-ai-systems-design/02-architectural-patterns/01-prompt-chaining.md)
@@ -268,17 +268,17 @@
 - **LoRA (Low-Rank Adaptation)**: A PEFT technique that decomposes weight updates into two low-rank matrices ($W + \Delta W = W + B \times A$), freezing original weights and updating only low-rank matrices during backpropagation. LoRA reduces trainable parameters by 99% while enabling zero-latency inference merges and hot-swappable task adapters on a single base model.  
   → See [03-peft-and-lora.md](../04-fine-tuning/03-peft-and-lora.md)
 
-- **QLoRA (Quantized Low-Rank Adaptation)**: An extension of LoRA that quantizes the base transformer weights to 4-bit NormalFloat (NF4) precision and backpropagates gradients through frozen quantized weights into 16-bit LoRA adapters. QLoRA enables fine-tuning 70B parameter models on a single consumer GPU (24GB VRAM) with virtually zero performance loss.  
+- **QLoRA (Quantized Low-Rank Adaptation)**: An extension of LoRA that quantizes the base transformer weights to 4-bit NormalFloat (NF4) precision and backpropagates gradients through frozen quantized weights into 16-bit LoRA adapters. QLoRA enables fine-tuning a 65B parameter model on a single GPU with 48GB VRAM with virtually zero performance loss.  
   → See [03-peft-and-lora.md](../04-fine-tuning/03-peft-and-lora.md)
 
 - **Quantization**: The compression process of mapping model weights and/or activations from high-precision floating-point formats (FP16/BF16) to lower-bit representations (INT8, INT4, FP4). Quantization cuts memory footprints and bandwidth demands by 50–75%, directly increasing batch capacity and reducing GPU hosting infrastructure costs.  
-  → See [06-production/02-cost-optimization/01-token-cost-fundamentals.md](../06-production/02-cost-optimization/01-token-cost-fundamentals.md)
+  → See [07-model-quantization.md](../06-production/02-cost-optimization/07-model-quantization.md)
 
 - **GPTQ**: A post-training quantization algorithm that quantizes weight matrices to 4-bit or 3-bit using second-order Taylor expansions to minimize layer-wise output errors. GPTQ offers high compression and fast decoding for GPU-bound inference, but cannot be easily adapted during runtime.  
-  → See [06-production/02-cost-optimization/01-token-cost-fundamentals.md](../06-production/02-cost-optimization/01-token-cost-fundamentals.md)
+  → See [07-model-quantization.md](../06-production/02-cost-optimization/07-model-quantization.md)
 
 - **AWQ (Activation-aware Weight Quantization)**: An advanced post-training quantization method that protects the top 1% of salient weights corresponding to large activation magnitudes before quantizing the remaining weights to 4-bit. AWQ consistently outperforms GPTQ across reasoning and perplexity benchmarks without significant throughput penalties.  
-  → See [06-production/02-cost-optimization/01-token-cost-fundamentals.md](../06-production/02-cost-optimization/01-token-cost-fundamentals.md)
+  → See [07-model-quantization.md](../06-production/02-cost-optimization/07-model-quantization.md)
 
 ---
 
@@ -291,7 +291,7 @@
   → See [05-evaluation/README.md](../05-evaluation/README.md)
 
 - **BERTScore**: An evaluation metric that computes token-level semantic similarity using contextual embedding cosine scores rather than exact surface token matches. BERTScore captures paraphrasing much better than BLEU/ROUGE, but struggles to catch subtle factual inversions (e.g., "not guilty" vs "guilty").  
-  → See [05-evaluation/README.md](../05-evaluation/README.md)
+  → See [01-reference-based-metrics.md](../05-evaluation/02-llm-evaluation/01-reference-based-metrics.md)
 
 - **LLM-as-a-Judge**: An evaluation methodology using an advanced frontier model (e.g., GPT-4o) guided by detailed rubrics to score generation quality, faithfulness, and style. While scalable and well-correlated with human judgment, it introduces position bias, verbosity bias, self-enhancement bias, and high evaluation token costs.  
   → See [05-evaluation/README.md](../05-evaluation/README.md)
@@ -309,10 +309,10 @@
   → See [05-evaluation/README.md](../05-evaluation/README.md)
 
 - **LangSmith**: A commercial observability, tracing, and evaluation platform developed by LangChain for monitoring LLM and agent execution graphs. LangSmith captures exact inputs, outputs, token latency, tool traces, and cost metrics at every node of a production pipeline.  
-  → See [06-production/README.md](../06-production/README.md)
+  → See [04-tools-and-platforms.md](../06-production/03-observability-and-monitoring/04-tools-and-platforms.md)
 
 - **Langfuse**: An open-source, self-hostable LLM engineering platform providing distributed tracing, prompt management, cost tracking, and score evaluation. Langfuse enables enterprise teams to maintain full data sovereignty and privacy over their user telemetry and prompt logs.  
-  → See [06-production/README.md](../06-production/README.md)
+  → See [04-tools-and-platforms.md](../06-production/03-observability-and-monitoring/04-tools-and-platforms.md)
 
 ---
 
@@ -321,7 +321,7 @@
 - **TTFT (Time to First Token)**: The latency duration spanning from when an inference engine receives a prompt to when it emits the very first output token, representing prompt processing (prefill) time. High TTFT degrades perceived interactivity in user-facing applications and is governed primarily by prompt token length and GPU compute capacity.  
   → See [06-production/README.md](../06-production/README.md)
 
-- **TBT (Time Between Tokens)**: The inter-token latency representing the time taken to decode each subsequent token after the initial token has been generated. TBT is governed by GPU memory bandwidth during KV cache reading and dictates the streaming reading speed experienced by the user.  
+- **TBT (Time Between Tokens)**: The inter-token latency (also known as TPOT - Time Per Output Token, or ITL - Inter-Token Latency) representing the time taken to decode each subsequent token after the initial token has been generated. TBT is governed by GPU memory bandwidth during KV cache reading and dictates the streaming reading speed experienced by the user.  
   → See [06-production/README.md](../06-production/README.md)
 
 - **Continuous Batching**: An inference scheduling technique that dynamically inserts new incoming requests into running iteration loops as soon as earlier requests finish generating their end-of-sequence tokens. Continuous batching eliminates idle GPU compute bubbles caused by static batch padding, increasing inference engine throughput by 10–20x.  
@@ -337,10 +337,10 @@
   → See [06-production/02-cost-optimization/02-model-routing.md](../06-production/02-cost-optimization/02-model-routing.md)
 
 - **vLLM**: A high-throughput, low-latency open-source LLM serving engine featuring PagedAttention, continuous batching, chunked prefill, and native tensor parallelism. vLLM is the industry standard for self-hosting open-weight models in scalable production environments.  
-  → See [06-production/README.md](../06-production/README.md)
+  → See [02-self-hosted-inference.md](../06-production/04-deployment/02-self-hosted-inference.md)
 
 - **TGI (Text Generation Inference)**: Hugging Face's production serving framework engineered for high-concurrency LLM deployment, supporting FlashAttention, continuous batching, and automated tensor parallelism across multi-GPU nodes.  
-  → See [06-production/README.md](../06-production/README.md)
+  → See [02-self-hosted-inference.md](../06-production/04-deployment/02-self-hosted-inference.md)
 
 - **Prompt Injection**: A security attack where adversarial user input overrides developer system prompt instructions, forcing the model to perform unintended, malicious actions or reveal hidden prompt instructions. Direct injection exploits the fundamental architectural vulnerability that LLMs cannot strictly distinguish code/instructions from untrusted user data.  
   → See [06-production/01-guardrails-and-security/03-prompt-injection.md](../06-production/01-guardrails-and-security/03-prompt-injection.md)
