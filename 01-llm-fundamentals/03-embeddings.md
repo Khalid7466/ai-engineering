@@ -40,3 +40,8 @@ While they use the same underlying concept, an LLM's internal token embeddings a
 ## Further Reading
 - [Word2Vec Paper](https://arxiv.org/abs/1301.3781) - The foundational paper on word embeddings.
 - [MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard) - The Massive Text Embedding Benchmark, used to choose embedding models for RAG.
+
+---
+<!-- nav:start -->
+[Previous: Tokenization](02-tokenization.md) | [Module Overview](README.md) | [Next: Positional Encoding](04-positional-encoding.md)
+<!-- nav:end -->

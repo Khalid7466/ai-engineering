@@ -65,3 +65,8 @@ class UserInfo(BaseModel):
 ## Further Reading
 - [OpenAI Prompt Engineering Guide](https://platform.openai.com/docs/guides/prompt-engineering) - The official best practices.
 - [Anthropic Prompt Engineering Interactive Tutorial](https://github.com/anthropics/anthropic-cookbook) - Excellent practical examples.
+
+---
+<!-- nav:start -->
+[Previous: Reasoning Failures](13-reasoning-failures.md) | [Module Overview](README.md) | [Next: Model Selection](15-model-selection.md)
+<!-- nav:end -->

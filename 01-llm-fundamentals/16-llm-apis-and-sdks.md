@@ -72,3 +72,8 @@ APIs go down. They enforce aggressive rate limits (Tokens Per Minute - TPM, Requ
 ## Further Reading
 - [LiteLLM Documentation](https://docs.litellm.ai/) - Guide to universal API routing.
 - [Tenacity library](https://tenacity.readthedocs.io/en/latest/) - Python library for retry logic.
+
+---
+<!-- nav:start -->
+[Previous: Model Selection](15-model-selection.md) | [Module Overview](README.md) | [Next: Use Case: Medical Q&A Bot](use-case.md)
+<!-- nav:end -->

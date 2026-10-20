@@ -49,3 +49,8 @@ It is tempting to abandon complex Retrieval-Augmented Generation (RAG) systems i
 
 ## Further Reading
 - [Lost in the Middle: How Language Models Use Long Contexts](https://arxiv.org/abs/2307.03172) - The seminal paper identifying the phenomenon.
+
+---
+<!-- nav:start -->
+[Previous: Feed-Forward Network (FFN)](07-feed-forward-network.md) | [Module Overview](README.md) | [Next: Output Head and Sampling](09-output-head-and-sampling.md)
+<!-- nav:end -->

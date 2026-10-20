@@ -45,3 +45,8 @@ The context window limit of an LLM (e.g., 8k, 128k) is heavily tied to its posit
 
 ## Further Reading
 - [RoPE Paper (RoFormer)](https://arxiv.org/abs/2104.09864) - The mathematical foundation of Rotary Positional Embeddings.
+
+---
+<!-- nav:start -->
+[Previous: Embeddings](03-embeddings.md) | [Module Overview](README.md) | [Next: Transformer Architecture](05-transformer-architecture.md)
+<!-- nav:end -->

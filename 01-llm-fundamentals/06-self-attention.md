@@ -46,3 +46,8 @@ Each head operates independently in parallel, learning different linguistic, syn
 
 ## Further Reading
 - [FlashAttention](https://arxiv.org/abs/2205.14135) - A hardware-aware algorithm that significantly speeds up the exact attention calculation and reduces memory usage, enabling modern long-context models.
+
+---
+<!-- nav:start -->
+[Previous: Transformer Architecture](05-transformer-architecture.md) | [Module Overview](README.md) | [Next: Feed-Forward Network (FFN)](07-feed-forward-network.md)
+<!-- nav:end -->

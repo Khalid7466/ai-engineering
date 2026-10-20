@@ -43,3 +43,8 @@ In 2023, lawyers used ChatGPT to write a legal brief. The model fabricated sever
 
 ## Further Reading
 - [Survey of Hallucination in Natural Language Generation](https://arxiv.org/abs/2202.03629) - Academic overview of why models hallucinate.
+
+---
+<!-- nav:start -->
+[Previous: Inference vs. Training](11-inference-vs-training.md) | [Module Overview](README.md) | [Next: Reasoning Failures](13-reasoning-failures.md)
+<!-- nav:end -->

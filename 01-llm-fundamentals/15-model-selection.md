@@ -50,3 +50,8 @@ Models you can download and run on your own hardware or through managed provider
 
 ## Further Reading
 - [LMSYS Chatbot Arena Leaderboard](https://chat.lmsys.org/?leaderboard) - The industry standard crowdsourced Elo rating for comparing model capabilities.
+
+---
+<!-- nav:start -->
+[Previous: Prompt Engineering](14-prompt-engineering.md) | [Module Overview](README.md) | [Next: LLM APIs and SDKs](16-llm-apis-and-sdks.md)
+<!-- nav:end -->
