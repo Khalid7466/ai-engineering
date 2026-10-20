@@ -45,7 +45,7 @@ graph LR
     E --> F[06\nProduction]
     F --> G[07\nAI Systems Design\nCapstone]
 
-    style G fill:#fbbf24,stroke:#92400e
+    style G fill:#6366f1,stroke:#4338ca,color:#fff
 ```
 
 Each module builds on the previous ones. **Module 07 is the capstone** — it only makes sense after you've worked through the others.

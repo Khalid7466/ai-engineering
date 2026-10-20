@@ -20,7 +20,7 @@ When faced with an AI engineering problem (e.g., "Make the model extract structu
 - **When to use:** When the model needs to understand a specific format (e.g., JSON structure) or a nuanced task that is hard to describe purely in instructions.
 
 ### 3. Retrieval-Augmented Generation (RAG)
-- **What it is:** Dynamically injecting relevant knowledge into the prompt context at runtime. → See [03-rag-architecture](../03-rag/01-rag-overview.md).
+- **What it is:** Dynamically injecting relevant knowledge into the prompt context at runtime. → See [02-rag-architecture](../02-rag/01-rag-overview.md).
 - **Cost:** Medium (requires vector database infrastructure, embedding models, and orchestration).
 - **When to use:** When the model lacks specific, private, or up-to-date **knowledge** (e.g., company policies, current news, user data). RAG solves knowledge deficits; it does not solve behavior/style deficits.
 
