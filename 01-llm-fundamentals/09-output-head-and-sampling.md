@@ -60,3 +60,8 @@ Standard autoregressive generation picks one token, commits to it, and moves on.
 
 ## Further Reading
 - [How to generate text: using different decoding methods](https://huggingface.co/blog/how-to-generate) - Hugging Face guide on sampling techniques.
+
+---
+<!-- nav:start -->
+[Previous: Context Window and the KV Cache](08-context-window.md) | [Module Overview](README.md) | [Next: Training Pipeline](10-training-pipeline.md)
+<!-- nav:end -->

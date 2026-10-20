@@ -56,3 +56,8 @@ The biggest debate in AI Engineering.
 
 ## Further Reading
 - [Hugging Face: Quantization](https://huggingface.co/docs/optimum/concept_guides/quantization) - How weights are compressed for inference.
+
+---
+<!-- nav:start -->
+[Previous: Training Pipeline](10-training-pipeline.md) | [Module Overview](README.md) | [Next: Hallucination](12-hallucination.md)
+<!-- nav:end -->

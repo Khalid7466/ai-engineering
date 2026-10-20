@@ -47,3 +47,8 @@ LLM: "Since 2 + 2 = 5, 5 * 2 is 10."
 
 ## Further Reading
 - [Chain-of-Thought Prompting Elicits Reasoning in Large Language Models](https://arxiv.org/abs/2201.11903) - The fundamental paper on CoT.
+
+---
+<!-- nav:start -->
+[Previous: Hallucination](12-hallucination.md) | [Module Overview](README.md) | [Next: Prompt Engineering](14-prompt-engineering.md)
+<!-- nav:end -->

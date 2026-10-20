@@ -50,3 +50,8 @@ This decoupling of parameter count (knowledge capacity) from active compute (lat
 
 ## Further Reading
 - [Transformer Feed-Forward Layers Are Key-Value Memories](https://arxiv.org/abs/2012.14913) - Paper exploring how FFNs store factual knowledge.
+
+---
+<!-- nav:start -->
+[Previous: Self-Attention](06-self-attention.md) | [Module Overview](README.md) | [Next: Context Window and the KV Cache](08-context-window.md)
+<!-- nav:end -->

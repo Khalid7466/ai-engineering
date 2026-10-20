@@ -54,3 +54,8 @@ Newer models like GPT-4o and Claude 3 have expanded their vocabularies specifica
 ## Further Reading
 - [OpenAI Tiktoken repository](https://github.com/openai/tiktoken) - Fast BPE tokeniser for use with OpenAI's models.
 - [Let's build the GPT Tokenizer (Andrej Karpathy)](https://www.youtube.com/watch?v=zduSFxRajkE) - Deep dive into how BPE works.
+
+---
+<!-- nav:start -->
+[Previous: What is an LLM?](01-what-is-an-llm.md) | [Module Overview](README.md) | [Next: Embeddings](03-embeddings.md)
+<!-- nav:end -->

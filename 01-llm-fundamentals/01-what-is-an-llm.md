@@ -63,3 +63,8 @@ If you ask it a question about a niche topic, it will confidently generate a sta
 ## Further Reading
 - [The Illustrated Transformer](http://jalammar.github.io/illustrated-transformer/) - Visual guide to the underlying architecture.
 - [Emergent Abilities of Large Language Models](https://arxiv.org/abs/2206.07682) - Paper discussing how capabilities emerge at scale.
+
+---
+<!-- nav:start -->
+[Previous: Module Overview](README.md) | [Module Overview](README.md) | [Next: Tokenization](02-tokenization.md)
+<!-- nav:end -->

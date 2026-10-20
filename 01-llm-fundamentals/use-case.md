@@ -67,3 +67,8 @@ def query_medical_bot(patient_history: str, clinical_guideline: str, user_questi
 2. **Plausibility vs. Truth:** We learned that an LLM will confidently lie if forced. Implementing the strict "Say UNKNOWN" escape hatch was crucial for safety.
 3. **Structured extraction over generation:** Using the LLM to extract data into a schema is far safer than asking it to generate a narrative summary of a treatment plan.
 </Use Case: Medical Q&A Bot>
+
+---
+<!-- nav:start -->
+[Previous: LLM APIs and SDKs](16-llm-apis-and-sdks.md) | [Module Overview](README.md) | [Next: Module Overview](../02-rag/README.md)
+<!-- nav:end -->

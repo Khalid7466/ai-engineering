@@ -62,3 +62,8 @@ As a token passes through 80 layers, its vector transforms from a simple diction
 
 ## Further Reading
 - [The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html) - Line-by-line implementation of the original paper in PyTorch.
+
+---
+<!-- nav:start -->
+[Previous: Positional Encoding](04-positional-encoding.md) | [Module Overview](README.md) | [Next: Self-Attention](06-self-attention.md)
+<!-- nav:end -->

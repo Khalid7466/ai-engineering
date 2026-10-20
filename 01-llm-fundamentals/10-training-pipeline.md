@@ -51,3 +51,8 @@ A modern alternative that bypassed the need for a separate Reward Model and comp
 ## Further Reading
 - [InstructGPT Paper](https://arxiv.org/abs/2203.02155) - The paper that popularized RLHF (the foundation of ChatGPT).
 - [DPO Paper](https://arxiv.org/abs/2305.18290) - The paper introducing Direct Preference Optimization.
+
+---
+<!-- nav:start -->
+[Previous: Output Head and Sampling](09-output-head-and-sampling.md) | [Module Overview](README.md) | [Next: Inference vs. Training](11-inference-vs-training.md)
+<!-- nav:end -->
