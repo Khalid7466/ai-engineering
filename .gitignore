@@ -14,3 +14,8 @@ Thumbs.db
 
 # VS Code
 .vscode/
+
+# Audit reports
+docs/audit/GAP_ANALYSIS.md
+docs/audit/IMPROVEMENTS_BACKLOG.md
+TOOLING_BLUEPRINTS.md

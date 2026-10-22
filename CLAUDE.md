@@ -14,16 +14,20 @@ This repository is a production-first knowledge base for software engineers tran
 
 To keep review manageable and maintain history hygiene:
 
-1. **One Branch Per Module:**
+1. **One Single Branch Per Module / Scope:**
+   - Keep all edits for a module in a single branch (e.g., `docs/01-llm-fundamentals`, `docs/02-rag`).
+   - Do NOT create auxiliary sub-branches for individual files or micro-fixes.
    - Always branch off the latest base branch for each module:
      ```bash
-     git checkout -b docs/<module-name>  # e.g., docs/02-rag
+     git checkout -b docs/<module-name>  # e.g., docs/01-llm-fundamentals
      ```
-2. **Atomic Commits:**
-   - Commit logically independent changes separately:
-     - `docs(NN): add mind map and file map to module README`
-     - `docs(NN): add previous/next navigation footers`
-     - `fix(NN): ...` / `feat(NN): ...`
+2. **One Commit Per File (All File Edits in One Commit):**
+   - Every file's edits (content updates, corrections, link additions, navigation footers, formatting) must be consolidated into **one single commit per file**.
+   - Do NOT create multiple commits touching the same file across a branch. Stage all changes for that file together and commit atomically:
+     ```bash
+     git add <path/to/file.md>
+     git commit -m "docs(NN): <actionable summary of all edits in file>"
+     ```
 3. **Human Review & Gating:**
    - Work module by module.
    - The user inspects and reviews changes (locally or remotely).
@@ -94,6 +98,7 @@ To facilitate smooth book-like reading, every concept file must end with a navig
 - At boundaries where Previous or Next does not exist, omit that link and its surrounding ` | ` separator (never leave empty links or trailing separators).
 - Use relative paths with forward slashes (`/`).
 - Idempotent: If `<!-- nav:start -->` already exists, replace the content between markers instead of duplicating.
+- **Deduplication:** Never output two links to the same file in one footer. If the `Previous` target resolves to the same file as `Module Overview` (`README.md`), omit the `Previous` link and its separator (e.g., in the first file of a module: `[Module Overview](README.md) | [Next: <Title>](next.md)`). Same for `Next`: if `Next` target equals `Module Overview`, omit the `Next` link.
 - Preserve existing file line endings (LF vs CRLF) and trailing newlines. Do not alter any other lines in the file.
 
 ### Traversal Order:
