@@ -30,8 +30,9 @@ To keep review manageable and maintain history hygiene:
      ```
 3. **Human Review & Gating:**
    - Work module by module.
-   - The user inspects and reviews changes (locally or remotely).
-   - Do NOT push to remote or merge into `main` automatically unless explicitly instructed.
+   - After each per-file commit, push it to the module branch (e.g., `git push origin docs/01-llm-fundamentals`).
+   - NEVER push to `main`, never use `--force`, never delete remote branches, and never merge into `main` unless explicitly instructed.
+   - The user inspects and reviews changes on the module branch.
 
 ---
 
