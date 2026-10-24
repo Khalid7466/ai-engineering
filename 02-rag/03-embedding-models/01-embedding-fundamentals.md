@@ -31,8 +31,8 @@ The embedding model is the ultimate bottleneck. If the model fails to map the qu
 - **Ignoring Normalization:** Using Dot Product on unnormalized vectors, leading to skewed similarity scores based on text length rather than semantic relevance.
 
 ## Interview Questions
-- **Q: Why use Cosine Similarity instead of Euclidean Distance for text embeddings?**
-  - *Answer:* Cosine similarity measures the angle between vectors, capturing semantic orientation regardless of magnitude. Euclidean distance is sensitive to magnitude, meaning a long document and a short document with the same meaning might be far apart in Euclidean space but close in Cosine space.
+- **Q: Does it matter whether you use Cosine Similarity or Euclidean Distance for text embeddings?**
+  - *Answer:* For normalized embeddings (OpenAI's embeddings are normalized to length 1), cosine similarity, dot product and Euclidean distance produce the same ranking, so the choice is about speed and convention; the dot product is the fastest. Cosine similarity matters when vectors are not normalized, because it ignores vector length, whereas Euclidean distance and the raw dot product are affected by it.
 
 ## Further Reading
 - [Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks](https://arxiv.org/abs/1908.10084) — The foundational paper on sentence embeddings.
